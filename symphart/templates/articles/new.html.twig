@@ -3,7 +3,9 @@
 {% block title %}New Article{% endblock %}
 
 {% block body %}
- {{ form_start(form) }}
- {{ form_widget(form) }}
- {{ form_end(form) }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    <hr>
+    <a href="/">Go Back</a>
 {% endblock %}
