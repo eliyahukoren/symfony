@@ -1,0 +1,44 @@
+create skeleton:
+    composer create-project symfony/sleleton <project name>
+
+install requirements:
+    composer install
+
+displays information about the project:
+    /var/www/html/symphart  php bin/console about
+
+install annotations:
+    composer require annotations
+
+    composer require sensio/framework-extra-bundle
+
+debugging tool inside:
+    php bin/console
+
+С помощью команды php -m можно посмотреть включённые в данный момент модули.
+
+Doctrine commands:
+# create database:
+    php bin/console help doctrine:database:create
+
+# new controller
+    php bin/console make:controller ProductController
+
+# command to create this class and any fields you need. The command will ask you some questions
+    php bin/console make:entity
+
+# like dbpatch
+    php bin/console make:migration
+
+# apply patch
+    php bin/console doctrine:migrations:migrate
+
+# If you prefer to add new properties manually, the make:entity command can generate the getter & setter methods for you:
+    php bin/console make:entity --regenerate
+
+# execute sql
+    php bin/console doctrine:query:sql 'select * from article'
+
+php bin/console doctrine:
+
+
