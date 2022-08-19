@@ -69,6 +69,45 @@ class ArticleController extends AbstractController {
         );
     }
 
+
+    /**
+     * @Route("/article/edit/{id}", name="edit_article")
+     * @Method({"GET", "POST"})
+     */
+    public function edit(Request $request, $id)
+    {
+        $article = new Article();
+        $article = $this->doctrine->getRepository(Article::class)->find($id);
+
+        $form = $this->createFormBuilder(($article))
+            ->add(
+                'title', TextType::class,
+                array('attr' => array('class' => 'form-control')))
+            ->add(
+                'body', TextareaType::class,
+                array('required' => false, 'attr' => array('class' => 'form-control')))
+            ->add(
+                'save', SubmitType::class, array('label' => 'Save',
+                'attr' => array('class' => 'btn btn-primary mt-3')))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->doctrine->getManager();
+            $entityManager->flush();
+
+            return $this->redirectToRoute('article_list');
+        }
+
+        return $this->render(
+            'articles/edit.html.twig',
+            array('form' => $form->createView())
+        );
+    }
+
+
     /**
      * @Route("/article/delete/{id}")
      * @Method({"DELETE"})
@@ -95,29 +134,5 @@ class ArticleController extends AbstractController {
         return $this->render('articles/show.html.twig', array('article' => $article));
     }
 
-    /**
-     * @Route("/article/save")
-     * @Method({"POST"})
-     */
-    public function save(): Response{
-        $entityManager = $this->doctrine->getManager();
-
-        $input = array('Non Music', 'Soul', 'Sokoke', 'Chausie', 'Dusky Dolphin','American Curl','British Shorthair');
-        $input2 = array('Miniature Horse','Cory\'s Shearwater','Gulf menhaden','Siamese Crocodile','Beddome\'s cat snake');
-        $key1 = array_rand($input, 1);
-        $key2 = array_rand($input2, 1);
-        $article = new Article();
-        $article->setTitle($input[$key1]);
-        $article->setBody($input2[$key2]);
-
-        // tell Doctrine you want to (eventually) save the Article (no queries yet)
-        $entityManager->persist($article);
-
-        // actually executes the queries (i.e. the INSERT query)
-        $entityManager->flush();
-
-        return new Response('Saved new product with id ' . $article->getId());
-
-    }
 
 }
