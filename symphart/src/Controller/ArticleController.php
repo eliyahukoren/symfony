@@ -70,6 +70,21 @@ class ArticleController extends AbstractController {
     }
 
     /**
+     * @Route("/article/delete/{id}")
+     * @Method({"DELETE"})
+     */
+    function delete(Request $request, $id){
+        $article = $this->doctrine->getRepository(Article::class)->find($id);
+
+        $entityManager = $this->doctrine->getManager();
+        $entityManager->remove($article);
+        $entityManager->flush();
+
+        $response = new Response();
+        $response->send();
+    }
+
+    /**
      * @Route("/article/{id}", name="article_show")
      * @Method({"GET"})
      */
@@ -104,4 +119,5 @@ class ArticleController extends AbstractController {
         return new Response('Saved new product with id ' . $article->getId());
 
     }
+
 }
