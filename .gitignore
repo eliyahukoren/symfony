@@ -1,0 +1,19 @@
+.DS_Store
+
+###> symfony/framework-bundle ###
+symphart/.env.local
+symphart/.env.local.php
+symphart/.env.*.local
+symphart/config/secrets/prod/prod.decrypt.private.php
+symphart/public/bundles/
+symphart/var/
+symphart/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+symphart/node_modules/
+symphart/public/build/
+symphart/npm-debug.log
+symphart/yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
