@@ -32,9 +32,10 @@ class ArticleController extends AbstractController {
             config/routes/routes.yaml
             return new Response('<html><body>Hello</body></html>');
         */
+        /* routing via annotation */
 
         $articles = $this->doctrine->getRepository(Article::class)->findAll();
-        /* routing via annotation */
+
         return $this->render('articles/index.html.twig', array('articles' => $articles));
     }
 
@@ -93,7 +94,7 @@ class ArticleController extends AbstractController {
                 'body', TextareaType::class,
                 array('required' => false, 'attr' => array('class' => 'form-control')))
             ->add(
-                'save', SubmitType::class, array('label' => 'Save',
+                'save', SubmitType::class, array('label' => 'Update',
                 'attr' => array('class' => 'btn btn-primary mt-3')))
             ->getForm();
 
@@ -118,7 +119,7 @@ class ArticleController extends AbstractController {
      * @Route("/article/delete/{id}")
      * @Method({"DELETE"})
      */
-    function delete(Request $request, $id){
+    function delete($id){
         $article = $this->doctrine->getRepository(Article::class)->find($id);
 
         $entityManager = $this->doctrine->getManager();
