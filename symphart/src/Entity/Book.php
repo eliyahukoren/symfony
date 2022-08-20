@@ -23,7 +23,7 @@ class Book
     private $name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $created;
 
@@ -38,14 +38,15 @@ class Book
     private $publish_date;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
-    private $string;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $book_image;
+
+
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -101,18 +102,6 @@ class Book
     public function setPublishDate(\DateTimeInterface $publish_date): self
     {
         $this->publish_date = $publish_date;
-
-        return $this;
-    }
-
-    public function getString(): ?string
-    {
-        return $this->string;
-    }
-
-    public function setString(?string $string): self
-    {
-        $this->string = $string;
 
         return $this;
     }

@@ -18,10 +18,10 @@
             <tbody>
                 {% for book in books %}
                 <tr>
-                    <td><a href="/book/{{ book.id }}">{{ book.title }}</a></td>
-                    <td><a href="/book/{{ book.id }}">{{ book.author }}</a></td>
-                    <td><a href="/book/{{ book.id }}">{{ book.published }}</a></td>
-                    <td><a href="/book/{{ book.id }}">{{ book.image }}</a></td>
+                    <td><a href="/book/{{ book.id }}">{{ book.name }}</a></td>
+                    <td><a href="/book/{{ book.id }}">{{ book.bookdescription }}</a></td>
+                    <td><a href="/book/{{ book.id }}">{{ book.publishdate|date("d/m/Y") }}</a></td>
+                    <td><a href="/book/{{ book.id }}">{{ book.bookimage }}</a></td>
                     <td class="row__align--end">
                         <a href="/book/{{ book.id }}" class="btn btn-info">Show</a>
                         <a href="/book/edit/{{ book.id }}" class="btn btn-light">Edit</a>
