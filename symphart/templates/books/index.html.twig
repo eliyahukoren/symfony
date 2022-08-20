@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymfoElik Books{% endblock  %}
+
+{% block body %}
+    {% if books %}
+        <table id="books" class="table table-striped">
+            <thead>
+                <tr>
+                <th>Book Title</th>
+                <th>Book Author</th>
+                <th>Publish Date</th>
+                <th>Image</th>
+                <th class="row__align--end row__pading">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td><a href="/book/{{ book.id }}">{{ book.title }}</a></td>
+                    <td><a href="/book/{{ book.id }}">{{ book.author }}</a></td>
+                    <td><a href="/book/{{ book.id }}">{{ book.published }}</a></td>
+                    <td><a href="/book/{{ book.id }}">{{ book.image }}</a></td>
+                    <td class="row__align--end">
+                        <a href="/book/{{ book.id }}" class="btn btn-info">Show</a>
+                        <a href="/book/edit/{{ book.id }}" class="btn btn-light">Edit</a>
+                        <a href="javascript:void(0)" class="btn btn-danger delete-book" data-id="{{ book.id }}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No books to display</p>
+    {% endif %}
+        <a href="/book/new" class="btn btn-primary">New Book</a>
+{% endblock  %}
+{% block javascript %}
+        <script src="/js/books.js"></script>
+{% endblock  %}
