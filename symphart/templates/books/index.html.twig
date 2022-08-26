@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SymfoElik Books{% endblock  %}
+
+{% block body %}
+    {% if books %}
+        <h3>Books List</h3>
+        <table id="books" class="table table-striped">
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>
+                        <a href="/book/{{ book.id }}">
+                            <img style="width: 90px; height: auto;" src="{{ book.imagePath }}">
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="/book/{{ book.id }}">{{ book.title }}</a>
+                    </td>
+
+                    <td>
+                        <a href="/book/{{ book.id }}">{{ book.publishDate }}</a>
+                    </td>
+
+                    <td>
+                        <a href="/book/{{ book.id }}">{{ book.isbn }}</a>
+                    </td>
+
+
+                    <td class="row__align--end">
+                        <a href="/book/{{ book.id }}" class="btn btn-info">Show</a>
+                        <a href="/book/edit/{{ book.id }}" class="btn btn-light">Edit</a>
+                        <a href="javascript:void(0)" class="btn btn-danger delete-book" data-id="{{ book.id }}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No books to display</p>
+    {% endif %}
+        <a href="/book/new" class="btn btn-primary">New Book</a>
+{% endblock  %}
+{% block javascript %}
+        <script src="/js/books.js"></script>
+{% endblock  %}
