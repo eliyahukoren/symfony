@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% set author_fullname = (author.firstName ~ ' ' ~ author.LastName)|title %}
+
+{% block title %}{{ author_fullname }}{% endblock %}
+
+{% block body %}
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ author_fullname }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+                Books: {{ author.booksCount }}
+            </h6>
+
+            <p class="card-text">{{ author.notes }}</p>
+            <a href="#" class="card-link">Books ?</a>
+            <a href="/author/edit/{{ author.id }}" class="card-link">Edit</a>
+        </div>
+    </div>
+
+    <hr>
+    <a href="/authors">Back to Authors List</a>
+{% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,27 +22,38 @@ class Book
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $isbn;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $created;
+    private $title;
+
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $author_id;
-
-    /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string", length=4)
      */
     private $publish_date;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $book_image;
+    private $image_path;
+
+    /**
+     * @ORM\Column(type="text", nullable=true, options={"default" : ""})
+     */
+    private $notes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Author::class, inversedBy="books")
+     */
+    private $authors;
+
+    public function __construct()
+    {
+        $this->authors = new ArrayCollection();
+    }
 
 
     public function __toString()
@@ -48,85 +61,93 @@ class Book
         return (string) $this->name;
     }
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $book_description;
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
-    {
-        return $this->created;
-    }
-
-    public function setCreated(\DateTimeInterface $created): self
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    public function getAuthorId(): ?int
-    {
-        return $this->author_id;
-    }
-
-    public function setAuthorId(int $author_id): self
-    {
-        $this->author_id = $author_id;
-
-        return $this;
-    }
-
-    public function getPublishDate(): ?\DateTimeInterface
+    public function getPublishDate(): string
     {
         return $this->publish_date;
     }
 
-    public function setPublishDate(\DateTimeInterface $publish_date): self
+    public function setPublishDate(string $publish_date): self
     {
         $this->publish_date = $publish_date;
 
         return $this;
     }
 
-    public function getBookImage(): ?string
+    public function getImagePath(): ?string
     {
-        return $this->book_image;
+        return $this->image_path;
     }
 
-    public function setBookImage(?string $book_image): self
+    public function setImagePath(?string $image_path): self
     {
-        $this->book_image = $book_image;
+        $this->image_path = $image_path;
 
         return $this;
     }
 
-    public function getBookDescription(): ?string
+    public function getISBN(): ?string
     {
-        return $this->book_description;
+        return $this->isbn;
     }
 
-    public function setBookDescription(?string $book_description): self
+    public function setISBN(?string $isbn): self
     {
-        $this->book_description = $book_description;
+        $this->isbn = $isbn;
 
         return $this;
     }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Author>
+     */
+    public function getAuthors(): Collection
+    {
+        return $this->authors;
+    }
+
+    public function addAuthor(Author $author): self
+    {
+        if (!$this->authors->contains($author)) {
+            $this->authors[] = $author;
+        }
+
+        return $this;
+    }
+
+    public function removeAuthor(Author $author): self
+    {
+        $this->authors->removeElement($author);
+
+        return $this;
+    }
+
 }

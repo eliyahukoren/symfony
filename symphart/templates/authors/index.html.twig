@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %}SymfoElik Authors{% endblock  %}
+
+{% block body %}
+    {% if authors %}
+        <h3>Authors List</h3>
+        <table id="authors" class="table table-striped">
+            <tbody>
+                {% for author in authors %}
+                {% set author_notes = (author.notes|length > 20) ? author.notes|slice(0,17) ~ '...' : author.notes %}
+                {% set notes_tooltip = author.notes %}
+
+                <tr>
+                    <td>
+                        <a href="/author/{{ author.id }}">{{ (author.firstName ~ ' ' ~ author.lastName)|title }}</a>
+                    </td>
+                    <td>
+                        <span
+                            class="d-inline-block"
+                            tabindex="0"
+                            data-toggle="tooltip"
+                            title="{{ notes_tooltip }}"
+                        >
+                            {{ author_notes }}
+                        </span>
+                    </td>
+                    <td>{{ author.booksCount }}_</td>
+                    <td class="row__align--end">
+                        <a href="/author/{{ author.id }}" class="btn btn-info">Show</a>
+                        <a href="/author/edit/{{ author.id }}" class="btn btn-light">Edit</a>
+                        <a href="javascript:void(0)" class="btn btn-danger delete-author" data-id="{{ author.id }}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No authors to display</p>
+    {% endif %}
+        <a href="/author/new" class="btn btn-primary">New Author</a>
+{% endblock  %}
+{% block javascript %}
+        <script src="/js/author.js"></script>
+{% endblock  %}

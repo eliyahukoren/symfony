@@ -4,24 +4,30 @@
 
 {% block body %}
     {% if books %}
+        <h3>Books List</h3>
         <table id="books" class="table table-striped">
-            <thead>
-                <tr>
-                <th>Book Title</th>
-                <th>Book Author</th>
-                <th>Publish Date</th>
-                <th>Image</th>
-                <th class="row__align--end row__pading">Actions</th>
-                </tr>
-            </thead>
-
             <tbody>
                 {% for book in books %}
                 <tr>
-                    <td><a href="/book/{{ book.id }}">{{ book.name }}</a></td>
-                    <td><a href="/book/{{ book.id }}">{{ book.bookdescription }}</a></td>
-                    <td><a href="/book/{{ book.id }}">{{ book.publishdate|date("d/m/Y") }}</a></td>
-                    <td><a href="/book/{{ book.id }}">{{ book.bookimage }}</a></td>
+                    <td>
+                        <a href="/book/{{ book.id }}">
+                            <img style="width: 90px; height: auto;" src="{{ book.imagePath }}">
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="/book/{{ book.id }}">{{ book.title }}</a>
+                    </td>
+
+                    <td>
+                        <a href="/book/{{ book.id }}">{{ book.publishDate }}</a>
+                    </td>
+
+                    <td>
+                        <a href="/book/{{ book.id }}">{{ book.isbn }}</a>
+                    </td>
+
+
                     <td class="row__align--end">
                         <a href="/book/{{ book.id }}" class="btn btn-info">Show</a>
                         <a href="/book/edit/{{ book.id }}" class="btn btn-light">Edit</a>

@@ -46,34 +46,34 @@ class BookController extends AbstractController {
 
         $form = $this->createFormBuilder(($book))
             ->add(
-                'name',
+                'title',
                 TextType::class,
                 array('attr' => array('class' => 'form-control'))
             )
-            ->add(
-                'book_description',
-                TextareaType::class,
-                array('attr' => array('class' => 'form-control'))
-            )
-            ->add(
-                'author_id', ChoiceType::class,
-                array(
-                    'attr' => array('class' => 'form-select'),
-                    'choices' => array('Author 1' => 1, 'Author 2' => 2))
-            )
-            ->add(
-                'publish_date', DateType::class,
-                array(
-                    'attr' => array('class' => 'form-control js-datepicker form-select'),
-                    'widget' => 'choice',
-                    'format' => 'yyyy-MM-dd'
-                )
-            )
-            ->add(
-                'book_image',
-                TextType::class,
-                array('attr' => array('class' => 'form-control'))
-            )
+            // ->add(
+            //     'book_description',
+            //     TextareaType::class,
+            //     array('attr' => array('class' => 'form-control'))
+            // )
+            // ->add(
+            //     'author_id', ChoiceType::class,
+            //     array(
+            //         'attr' => array('class' => 'form-select'),
+            //         'choices' => array('Author 1' => 1, 'Author 2' => 2))
+            // )
+            // ->add(
+            //     'publish_date', DateType::class,
+            //     array(
+            //         'attr' => array('class' => 'form-control js-datepicker form-select'),
+            //         'widget' => 'choice',
+            //         'format' => 'yyyy-MM-dd'
+            //     )
+            // )
+            // ->add(
+            //     'book_image',
+            //     TextType::class,
+            //     array('attr' => array('class' => 'form-control'))
+            // )
             ->add(
                 'save',
                 SubmitType::class,

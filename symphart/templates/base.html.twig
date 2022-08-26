@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link href="https://bootswatch.com/4/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+        <link href="https://bootswatch.com/4/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
         <style>
             body{
                 background-color: #79d6f13d;
@@ -26,7 +26,10 @@
             .btn{
                 border-radius: 5px;
             }
-        </style>>
+            textarea {   /* for all text* area elements */
+                resize: none;
+            }
+        </style>
         {% block stylesheets %}{% endblock %}
 
     </head>
