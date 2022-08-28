@@ -1,4 +1,6 @@
 const authors = document.getElementById('authors');
+const searchBtn = document.getElementById('searchBtn');
+const searchForm = document.getElementById('searchForm');
 
 if (authors) {
     authors.addEventListener('click', e => {
@@ -14,6 +16,13 @@ if (authors) {
     })
 }
 
+searchBtn.addEventListener('keyup', e => {
+    let x = setTimeout(() => {
+        searchForm.submit()
+    }, 500)
+})
+
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
+searchBtn.focus()

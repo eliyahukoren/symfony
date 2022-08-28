@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Author;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 /**
  * @extends ServiceEntityRepository<Author>
@@ -37,6 +38,40 @@ class AuthorRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findBooksByAuthor(int $author_id)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $sql = 'SELECT ba.book_id, b.title
+                    FROM author a
+                    LEFT JOIN book_author ba ON a.id=ba.author_id
+                    LEFT JOIN book b ON b.id=ba.book_id
+                WHERE a.id = ?
+                ORDER BY book_id
+        ';
+        $rsm->addScalarResult('book_id', 'book_id');
+        $rsm->addScalarResult('title', 'title');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter(1, $author_id);
+        $books = $query->getScalarResult();
+
+        return $books;
+    }
+
+    public function findAuthorByAnyField(string $value)
+    {
+        $query =  $this->createQueryBuilder('a')
+            ->where("a.first_name LIKE '%{$value}%'")
+            ->orWhere("a.last_name LIKE '%{$value}%'")
+            ->orWhere("a.notes LIKE '%{$value}%'")
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery();
+
+        return $query->getResult();
+
     }
 
 //    /**

@@ -2,7 +2,9 @@
 namespace App\Controller;
 
 use App\Entity\Author;
-
+use App\Repository\AuthorRepository;
+use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,23 +16,33 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorController extends AbstractController {
-    private $doctrine;
+    private $authorRepository;
+    private $entityManager;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(
+        AuthorRepository $authorRepository,
+        EntityManagerInterface $entityManager
+    )
     {
-        $this->doctrine = $doctrine;
+        $this->authorRepository = $authorRepository;
+        $this->entityManager = $entityManager;
     }
+
     /**
-    * @Route("/authors", name="author_list")
-    * @Method({"GET"})
-    */
-    public function index(){
-        $authors = $this->doctrine->getRepository(Author::class)->findAll();
-        // dd($authors);
+     * @Route("/authors", name="author_list")
+     * @Method({"GET", "POST"})
+     */
+    public function index(AuthorRepository $authorRepository, Request $request)
+    {
+        if($request->query->get('q')){
+            $authors = $authorRepository->findAuthorByAnyField($request->query->get('q'));
+        }else{
+            $repository = $this->entityManager->getRepository(Author::class);
+            $authors = $repository->findAll();
+        }
 
         return $this->render('authors/index.html.twig', array('authors' => $authors));
     }
-
 
     /**
      * @Route("/author/edit/{id}", name="edit_author")
@@ -39,7 +51,7 @@ class AuthorController extends AbstractController {
     public function edit(Request $request, $id)
     {
         $author = new Author();
-        $author = $this->doctrine->getRepository(Author::class)->find($id);
+        $author = $this->entityManager->getRepository(Author::class)->find($id);
 
         $form = $this->createFormBuilder(($author))
             ->add(
@@ -78,8 +90,7 @@ class AuthorController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $entityManager = $this->doctrine->getManager();
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('author_list');
         }
@@ -114,8 +125,9 @@ class AuthorController extends AbstractController {
      */
     public function show($id)
     {
-        $author = $this->doctrine->getRepository(Author::class)->find($id);
+        $author = $this->entityManager->getRepository(Author::class)->find($id);
+        $books = $this->authorRepository->findBooksByAuthor($id);
 
-        return $this->render('authors/show.html.twig', array('author' => $author));
+        return $this->render('authors/show.html.twig', array('author' => $author, 'books' => $books));
     }
 }

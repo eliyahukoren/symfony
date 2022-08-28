@@ -1,102 +1,86 @@
 <?php
+// src/Controller/BookController.php
 
 namespace App\Controller;
 
 use App\Entity\Book;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use App\Repository\BookRepository;
+use Doctrine\ORM\EntityManagerInterface;
+//use for routes
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 
+use Doctrine\Persistence\ManagerRegistry;
+
+// form controls
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+// request, response
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 
 class BookController extends AbstractController {
-    private $doctrine;
+    // registry manager
+    private $manager_registry;
+    private $bookRepository;
+    private $entityManager;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ManagerRegistry $manager_registry,
+        BookRepository $bookRepository
+    )
     {
-        $this->doctrine = $doctrine;
+        $this->manager_registry = $manager_registry;
+        $this->bookRepository = $bookRepository;
+        $this->entityManager = $entityManager;
     }
 
-
     /**
-     * @Route("/books", name="book_list")
-     * @Method({"GET"})
+     * @Route("/books", name="books_list")
      */
-    public function index(){
-        $books = $this->doctrine->getRepository(Book::class)->findAll();
+    public function list(){
+        $books = $this->entityManager->getRepository(Book::class)->findAll();
         return $this->render('books/index.html.twig', array('books' => $books));
     }
 
     /**
-     * @Route("/book/new", name="new_book")
-     * @Method({"GET", "POST"})
+     * @Route("/book/edit/", name="book_edit")
      */
-    public function new(Request $request)
+    public function edit(Request $request, int $id){
+        dd($request);
+    }
+
+    /**
+     * @Route("/book/{id}", name="book_show")
+     */
+    public function show(Request $request, int $id): Response
     {
-        $book = new Book();
+        $book = $this->manager_registry->getRepository(Book::class)->find($id);
+        $authors = $this->bookRepository->findAuthorsByBook($id);
 
-        $form = $this->createFormBuilder(($book))
-            ->add(
-                'title',
-                TextType::class,
-                array('attr' => array('class' => 'form-control'))
-            )
-            // ->add(
-            //     'book_description',
-            //     TextareaType::class,
-            //     array('attr' => array('class' => 'form-control'))
-            // )
-            // ->add(
-            //     'author_id', ChoiceType::class,
-            //     array(
-            //         'attr' => array('class' => 'form-select'),
-            //         'choices' => array('Author 1' => 1, 'Author 2' => 2))
-            // )
-            // ->add(
-            //     'publish_date', DateType::class,
-            //     array(
-            //         'attr' => array('class' => 'form-control js-datepicker form-select'),
-            //         'widget' => 'choice',
-            //         'format' => 'yyyy-MM-dd'
-            //     )
-            // )
-            // ->add(
-            //     'book_image',
-            //     TextType::class,
-            //     array('attr' => array('class' => 'form-control'))
-            // )
-            ->add(
-                'save',
-                SubmitType::class,
-                array('label' => 'Create', 'attr' => array('class' => 'btn btn-primary mt-3'))
-            )
-            ->getForm();
+        return $this->render('books/show.html.twig', array('book' => $book, 'authors' => $authors));
+    }
 
-        $form->handleRequest($request);
+    /**
+     * @Route("/book/delete/", name="book_delete")
+     */
+    public function delete(Request $request, int $id)
+    {
+        dd($request);
+    }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $article = $form->getData();
-
-            $entityManager = $this->doctrine->getManager();
-            $entityManager->persist($article);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('book_list');
-        }
-
-        return $this->render(
-            'books/new.html.twig',
-            array('form' => $form->createView())
-        );
+    /**
+     * @Route("/book/new/", name="book_new")
+     */
+    public function new()
+    {
+        dd(array());
     }
 
 }

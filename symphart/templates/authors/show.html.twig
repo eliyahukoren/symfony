@@ -10,11 +10,21 @@
         <div class="card-body">
             <h5 class="card-title">{{ author_fullname }}</h5>
             <h6 class="card-subtitle mb-2 text-muted">
-                Books: {{ author.booksCount }}
+                Books: {{ books|length }}
             </h6>
 
             <p class="card-text">{{ author.notes }}</p>
-            <a href="#" class="card-link">Books ?</a>
+            {% if books %}
+                {% for book in books %}
+                    <p>
+                        <a href="/book/{{ book['book_id']}}" class="card-link">{{ book['title']}}</a>
+                    </p>
+                {% endfor %}
+
+            {% else %}
+
+            {% endif %}
+
             <a href="/author/edit/{{ author.id }}" class="card-link">Edit</a>
         </div>
     </div>

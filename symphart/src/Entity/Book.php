@@ -48,11 +48,11 @@ class Book
     /**
      * @ORM\ManyToMany(targetEntity=Author::class, inversedBy="books")
      */
-    private $authors;
+    private $author;
 
     public function __construct()
     {
-        $this->authors = new ArrayCollection();
+        $this->author = new ArrayCollection();
     }
 
 
@@ -129,15 +129,15 @@ class Book
     /**
      * @return Collection<int, Author>
      */
-    public function getAuthors(): Collection
+    public function getAuthor(): Collection
     {
-        return $this->authors;
+        return $this->author;
     }
 
     public function addAuthor(Author $author): self
     {
-        if (!$this->authors->contains($author)) {
-            $this->authors[] = $author;
+        if (!$this->author->contains($author)) {
+            $this->author[] = $author;
         }
 
         return $this;
@@ -145,7 +145,7 @@ class Book
 
     public function removeAuthor(Author $author): self
     {
-        $this->authors->removeElement($author);
+        $this->author->removeElement($author);
 
         return $this;
     }

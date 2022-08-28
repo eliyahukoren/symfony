@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -37,6 +39,25 @@ class BookRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findAuthorsByBook(int $book_id){
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $sql = 'SELECT a.id, a.first_name, a.last_name
+                    FROM author a
+                    LEFT JOIN book_author ba ON a.id=ba.author_id
+                    LEFT JOIN book b ON b.id=ba.book_id
+                WHERE b.id = ?
+                ORDER BY book_id
+        ';
+        $rsm->addScalarResult('id', 'author_id');
+        $rsm->addScalarResult('first_name', 'first_name');
+        $rsm->addScalarResult('last_name', 'last_name');
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        $query->setParameter(1, $book_id);
+        $authors = $query->getScalarResult();
+        return $authors;
     }
 
 //    /**

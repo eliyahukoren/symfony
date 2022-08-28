@@ -4,6 +4,16 @@
 {% block body %}
     {% if authors %}
         <h3>Authors List</h3>
+        <form id="searchForm" action="{{ path('author_list')}}">
+            <input type="search"
+                id="searchBtn"
+                name="q"
+                class="form-control"
+                placeholder="Search by any field ..."
+                aria-label="Search"
+                value="{{ app.request.query.get('q') }}"
+            >
+        </form>
         <table id="authors" class="table table-striped">
             <tbody>
                 {% for author in authors %}
@@ -24,7 +34,7 @@
                             {{ author_notes }}
                         </span>
                     </td>
-                    <td>{{ author.booksCount }}_</td>
+                    <td>{{ author.booksCount }}</td>
                     <td class="row__align--end">
                         <a href="/author/{{ author.id }}" class="btn btn-info">Show</a>
                         <a href="/author/edit/{{ author.id }}" class="btn btn-light">Edit</a>

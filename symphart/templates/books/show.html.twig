@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block body %}
+
+    <div class="card" style="width: 18rem; margin: auto;">
+        <img class="card-img-top" src="{{book.imagePath}}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{book.title}}</h5>
+            <p class="card-text">{{ book.notes }}</p>
+            {% if authors %}
+                {% if authors|length > 1 %}
+                    {% set text = 'Authors'%}
+                {% else %}
+                    {% set text = 'Author'%}
+                {% endif %}
+
+                <p class="card-text">{{ text }}:</p>
+
+                {% for author in authors %}
+                    <a href="/author/{{ author['author_id'] }}">{{ author['first_name'] ~ ' ' ~ author['last_name']}}</a>
+                {% endfor %}
+
+            {% else %}
+                <p class="card-text">Not found authors for this book.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+    <a href="/books">Back to Books List</a>
+{% endblock %}

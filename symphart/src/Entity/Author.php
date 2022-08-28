@@ -40,7 +40,7 @@ class Author
     private $notes;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Book::class, mappedBy="authors")
+     * @ORM\ManyToMany(targetEntity=Book::class, mappedBy="author")
      */
     private $books;
 
@@ -133,4 +133,5 @@ class Author
 
         return $this;
     }
+
 }
