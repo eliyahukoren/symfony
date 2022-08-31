@@ -29,7 +29,7 @@ $i++;
 //$cfg['Servers'][$i]['auth_type'] = 'cookie';
 /* Server parameters */
 $cfg['Servers'][$i]['host'] = 'db';
-$cfg['Servers'][$i]['posrt'] = 3306;
+$cfg['Servers'][$i]['posrt'] = 13306;
 $cfg['Servers'][$i]['extension'] = 'mysqli';
 
 $cfg['Servers'][$i]['compress'] = false;

@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Repository\AuthorRepository;
-use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Routing\Annotation\Route;
